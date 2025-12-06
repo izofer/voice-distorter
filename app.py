@@ -13,18 +13,14 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 processor = AudioProcessor(UPLOAD_FOLDER)
 
 def cleanup_uploads():
-    """Deletes files in uploads folder older than 10 minutes."""
-    now = time.time()
-    cutoff = now - 600  # 10 minutes in seconds
-    print("Running cleanup task...")
+    """Deletes ALL files in uploads folder every 10 minutes."""
+    print("Running cleanup task - Purging all files...")
     for filename in os.listdir(UPLOAD_FOLDER):
         file_path = os.path.join(UPLOAD_FOLDER, filename)
         try:
             if os.path.isfile(file_path):
-                file_age = os.path.getmtime(file_path)
-                if file_age < cutoff:
-                    os.remove(file_path)
-                    print(f"Deleted old file: {filename}")
+                os.remove(file_path)
+                print(f"Deleted file: {filename}")
         except Exception as e:
             print(f"Error deleting {filename}: {e}")
 
