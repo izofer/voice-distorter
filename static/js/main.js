@@ -109,7 +109,20 @@ async function toggleRecording() {
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+
+        let options = { mimeType: 'audio/webm;codecs=opus' };
+        if (!MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+            if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                options = { mimeType: 'audio/mp4' };
+            } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+                options = { mimeType: 'audio/ogg;codecs=opus' };
+            } else {
+                options = {}; // Let browser choose default
+            }
+        }
+
+        console.log("Using MIME type:", options.mimeType || "default");
+        mediaRecorder = new MediaRecorder(stream, options);
         audioChunks = [];
 
         // Audio Context for Visualizer
