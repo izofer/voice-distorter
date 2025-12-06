@@ -2,12 +2,35 @@ import os
 import uuid
 from flask import Flask, render_template, request, send_from_directory, jsonify
 from audio_processor import AudioProcessor
+import time
+from apscheduler.schedulers.background import BackgroundScheduler
+import shutil
 
 app = Flask(__name__)
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 processor = AudioProcessor(UPLOAD_FOLDER)
+
+def cleanup_uploads():
+    """Deletes files in uploads folder older than 10 minutes."""
+    now = time.time()
+    cutoff = now - 600  # 10 minutes in seconds
+    print("Running cleanup task...")
+    for filename in os.listdir(UPLOAD_FOLDER):
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        try:
+            if os.path.isfile(file_path):
+                file_age = os.path.getmtime(file_path)
+                if file_age < cutoff:
+                    os.remove(file_path)
+                    print(f"Deleted old file: {filename}")
+        except Exception as e:
+            print(f"Error deleting {filename}: {e}")
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=cleanup_uploads, trigger="interval", minutes=10)
+scheduler.start()
 
 @app.route('/')
 def index():
@@ -54,4 +77,9 @@ def download_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        # Run cleanup once on startup just in case
+        cleanup_uploads() 
+        app.run(debug=True, use_reloader=False) # Reloader can duplicate threads
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
