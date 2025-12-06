@@ -4,25 +4,30 @@ from pydub.generators import Sine
 import numpy as np
 import scipy.signal
 
-# Configure Pydub to use local FFmpeg binaries
+# Configure Pydub to use local FFmpeg binaries if available (Windows Dev Check)
 # This overrides the system PATH check which can be flaky on Windows
 bin_path = os.path.join(os.getcwd(), 'bin')
+local_ffmpeg = os.path.join(bin_path, 'ffmpeg.exe')
+local_ffprobe = os.path.join(bin_path, 'ffprobe.exe')
 
-# CRITICAL: Add to system PATH so pydub can find ffprobe via subprocess
-os.environ["PATH"] = bin_path + os.pathsep + os.environ["PATH"]
+if os.path.exists(local_ffmpeg) and os.path.exists(local_ffprobe):
+    # LOCAL WINDOWS DEV ENVIRONMENT
+    os.environ["PATH"] = bin_path + os.pathsep + os.environ["PATH"]
+    AudioSegment.converter = local_ffmpeg
+    AudioSegment.ffprobe = local_ffprobe
+    print(f"DEBUG: Using local FFmpeg: {local_ffmpeg}")
+else:
+    # DOCKER / SYSTEM ENVIRONMENT
+    # Pydub automatically finds 'ffmpeg' in system PATH
+    # We do NOT set AudioSegment.converter explicitly, letting shutil.which find it
+    print("DEBUG: Using system FFmpeg (Docker/Global)")
 
-AudioSegment.converter = os.path.join(bin_path, 'ffmpeg.exe')
-AudioSegment.ffprobe = os.path.join(bin_path, 'ffprobe.exe')
-
-print(f"DEBUG: Added to PATH: {bin_path}")
-print(f"DEBUG: FFmpeg path: {AudioSegment.converter}")
-print(f"DEBUG: FFprobe path: {AudioSegment.ffprobe}")
-
-# Verify files exist
-if not os.path.exists(AudioSegment.converter):
-    print("ERROR: ffmpeg.exe NOT FOUND at expected path!")
-if not os.path.exists(AudioSegment.ffprobe):
-    print("ERROR: ffprobe.exe NOT FOUND at expected path!")
+# Check if pydub can actually find ffmpeg (for debugging logs)
+from pydub.utils import which
+if which("ffmpeg"):
+    print(f"DEBUG: FFmpeg found at: {which('ffmpeg')}")
+else:
+    print("CRITICAL WARNING: FFmpeg not found in PATH!")
 
 class AudioProcessor:
     def __init__(self, upload_folder):
