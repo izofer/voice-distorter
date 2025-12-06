@@ -1,0 +1,9 @@
+__pycache__
+venv
+bin
+.git
+.idea
+.vscode
+*.pyc
+uploads/*
+!uploads/.gitkeep

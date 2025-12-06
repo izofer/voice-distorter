@@ -1,0 +1,317 @@
+:root {
+    --bg-color: #050505;
+    --card-bg: #111111;
+    --text-color: #ffffff;
+    --accent-color: #ff0033;
+    --accent-glow: rgba(255, 0, 51, 0.5);
+    --secondary-text: #888;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+}
+
+header .accent {
+    color: var(--accent-color);
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+header p {
+    color: var(--secondary-text);
+    margin-bottom: 3rem;
+}
+
+.record-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px var(--accent-glow);
+    margin: 2rem 0;
+}
+
+.record-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 0 40px var(--accent-glow);
+    transform: scale(1.05);
+}
+
+.record-btn.recording {
+    animation: pulse 1.5s infinite;
+    background: var(--accent-color);
+    color: white;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 51, 0.7);
+    }
+
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 20px rgba(255, 0, 51, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 51, 0);
+    }
+}
+
+.visualizer-container {
+    height: 100px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#visualizer {
+    width: 100%;
+    height: 100%;
+}
+
+.effects-container {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 15px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.scrollable-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.8rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Custom Scrollbar */
+.scrollable-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollable-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.scrollable-grid::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+.effect-btn {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.effect-btn i {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.effect-btn:hover {
+    border-color: var(--accent-color);
+    background: rgba(255, 0, 51, 0.1);
+    transform: translateY(-2px);
+}
+
+.effect-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-2px);
+}
+
+/* Record Again Button */
+.record-again-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(5px);
+    text-transform: uppercase;
+}
+
+.record-again-btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+}
+
+.record-again-btn i {
+    font-size: 0.9em;
+}
+
+.controls-section.hidden,
+.result-section.hidden,
+#processingIndicator
+
+/* Range Input Styling */
+input[type=range] {
+    width: 100%;
+    margin: 10px 0;
+    accent-color: var(--accent-color);
+}
+
+.control-group {
+    margin-bottom: 1rem;
+    color: white;
+}
+
+/* Record Again Button */
+.record-again-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(5px);
+    text-transform: uppercase;
+}
+
+.record-again-btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+}
+
+.record-again-btn i {
+    font-size: 0.9em;
+}
+
+.hidden {
+    display: none;
+}
+
+.download-btn {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-top: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 25px var(--accent-glow);
+}
+
+.reset-btn {
+    background: transparent;
+    border: none;
+    color: var(--secondary-text);
+    margin-left: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+audio {
+    width: 100%;
+    margin: 1rem 0;
+    filter: invert(1) hue-rotate(180deg);
+    /* Dark mode audio player hack */
+}
+
+/* Record Again Button */
+.record-again-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(5px);
+    text-transform: uppercase;
+}
+
+.record-again-btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+}
+
+.record-again-btn i {
+    font-size: 0.9em;
+}

@@ -1,0 +1,5 @@
+flask
+pydub
+numpy
+scipy
+gunicorn

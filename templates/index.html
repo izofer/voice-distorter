@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Distorter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>VOICE <span class="accent">DISTORTER</span></h1>
+            <p>Record and transform your voice with pro effects</p>
+        </header>
+
+        <div class="main-interface">
+            <!-- Recording Section -->
+            <div class="record-section">
+                <div class="visualizer-container">
+                    <canvas id="visualizer"></canvas>
+                </div>
+                <button id="recordBtn" class="record-btn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <p id="status">Press to record</p>
+            </div>
+
+            <!-- Controls Section (Initially Hidden) -->
+            <div id="controlsSection" class="controls-section hidden">
+                <div class="audio-player">
+                    <audio id="audioPlayback" controls></audio>
+                </div>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button id="cancelBtn" class="record-again-btn">
+                        <i class="fas fa-undo"></i> Record Again
+                    </button>
+                </div>
+
+                <h3>Select Effect</h3>
+                <div class="effects-container">
+                    <div class="effects-grid scrollable-grid">
+                        {% for effect in effects %}
+                        <button class="effect-btn" data-effect="{{ effect }}">
+                            <i class="fas fa-wave-square"></i> {{ effect }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Custom Controls Panel -->
+                <div id="customControls" class="custom-controls hidden"
+                    style="margin-top: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+                    <h4>Custom Settings</h4>
+                    <div class="control-group">
+                        <label>Pitch: <span id="pitchVal">1.0</span>x</label>
+                        <input type="range" id="pitchRange" min="0.5" max="2.0" step="0.1" value="1.0">
+                    </div>
+                    <div class="control-group">
+                        <label>Speed: <span id="speedVal">1.0</span>x</label>
+                        <input type="range" id="speedRange" min="0.5" max="2.0" step="0.1" value="1.0">
+                    </div>
+                    <div class="control-group">
+                        <label>Distortion: <span id="distVal">0</span></label>
+                        <input type="range" id="distRange" min="0" max="50" step="1" value="0">
+                    </div>
+                </div>
+
+                <div class="action-actions">
+                    <div id="processingIndicator" class="hidden">
+                        <i class="fas fa-spinner fa-spin"></i> Processing...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="resultSection" class="result-section hidden">
+                <h3>Result</h3>
+                <audio id="resultPlayback" controls></audio>
+                <a id="downloadLink" class="download-btn" href="#" download="distorted_voice.mp3">
+                    <i class="fas fa-download"></i> Download MP3
+                </a>
+                <button id="resetBtn" class="reset-btn">New Audio</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=5"></script>
+</body>
+
+</html>
